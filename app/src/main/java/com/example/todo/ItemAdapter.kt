@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
  * Adapter for the [RecyclerView] in [MainActivity]. Displays [Affirmation] data object.
  */
 class ItemAdapter(
-    private val dataset: Array<String>
+    private val dataset: MutableList<String>
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
     class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {

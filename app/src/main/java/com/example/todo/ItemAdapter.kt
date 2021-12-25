@@ -1,28 +1,40 @@
 package com.example.todo
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-/**
- * Adapter for the [RecyclerView] in [MainActivity]. Displays [Affirmation] data object.
- */
+
 class ItemAdapter(
-    private val dataset: MutableList<String>
+    private val dataset: MutableList<String>,
+    private val onDelete: (position: Int) -> Unit
 ) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>() {
 
-    class ItemViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView = view.findViewById(R.id.item_title)
+    // This is the view Holder
+    class ItemViewHolder(
+        private val view: View,
+        private val onDelete: (position: Int) -> Unit,
+        private val adapter: ItemAdapter
+    ) : RecyclerView.ViewHolder(view), View.OnClickListener {
+        val textView: TextView = view.findViewById(R.id.textView)
+
+        init {
+            itemView.setOnClickListener(this)
+        }
+        override fun onClick(v: View){
+            onDelete(this.layoutPosition)
+            adapter.notifyDataSetChanged()
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         // create a new view
         val adapterLayout = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item, parent, false)
-        return ItemViewHolder(adapterLayout)
+        return ItemViewHolder(adapterLayout, onDelete, this)
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
@@ -31,4 +43,5 @@ class ItemAdapter(
     }
 
     override fun getItemCount() = dataset.size
+
 }
